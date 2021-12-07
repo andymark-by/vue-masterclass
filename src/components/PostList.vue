@@ -1,28 +1,62 @@
 <template>
-  <h1>Welcome to the Forum</h1>
-  <ThreadList :threads="threads"/>
+  <div class="post-list">
+
+    <div
+      v-for="post in posts" :key="post.id"
+      class="post"
+    >
+
+      <div class="user-info">
+        <a href="#" class="user-name">
+          {{ userById(post.userId).name }}
+        </a>
+
+        <a href="#">
+          <img class="avatar-large"
+               :src="userById(post.userId).avatar"
+               alt=""
+          >
+        </a>
+
+        <p class="desktop-only text-small">107 posts</p>
+
+      </div>
+
+      <div class="post-content">
+        <div>
+          {{ post.text }}
+        </div>
+      </div>
+
+      <AppDate
+        class="post-date text-faded"
+        :timestamp="post.publishedAt"
+      />
+
+    </div>
+
+  </div>
 </template>
 
 <script>
 import sourceData from '@/data.json';
-import ThreadList from '@/components/ThreadList.vue';
 
 export default {
-  name: 'PageHome',
-  components: { ThreadList },
+  name: 'PostList',
+  props: {
+    posts: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
-      threads: sourceData.threads,
-      posts: sourceData.posts,
       users: sourceData.users,
     };
   },
   methods: {
-    postById(postId) {
-      return this.posts.find((p) => p.id === postId);
-    },
-    userByPostId(postId) {
-      return this.users.find((u) => u.id === this.postById(postId).userId);
+    userById(userId) {
+      return this.users.find((u) => u.id === userId);
     },
   },
 };

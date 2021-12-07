@@ -1,79 +1,20 @@
 <template>
-  <div class="col-large push-top">
-
-    <h1>{{ thread.title }}}</h1>
-
-    <div class="post-list">
-
-      <div
-        v-for="postId in thread.posts" :key="postId"
-        class="post"
-      >
-
-        <div class="user-info">
-          <a href="#" class="user-name">
-            {{ userByPostId(postId).name }}
-          </a>
-
-          <a href="#">
-            <img class="avatar-large"
-                 :src="userByPostId(postId).avatar"
-                 alt=""
-            >
-          </a>
-
-          <p class="desktop-only text-small">107 posts</p>
-
-        </div>
-
-        <div class="post-content">
-          <div>
-            {{ postById(postId).text }}
-          </div>
-        </div>
-
-        <div class="post-date text-faded">
-          {{ postById(postId).publishedAt }}
-        </div>
-
-      </div>
-
-    </div>
-  </div>
+  <h1>Welcome to the Forum</h1>
+  <CategoryList :categories="categories"/>
 </template>
 
 <script>
 import sourceData from '@/data.json';
+import CategoryList from '@/components/CategoryList.vue';
 
 export default {
-  name: 'PageThreadShow',
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-  },
+  name: 'PageHome',
+  components: { CategoryList },
   data() {
     return {
-      threads: sourceData.threads,
-      posts: sourceData.posts,
-      users: sourceData.users,
+      categories: sourceData.categories,
     };
   },
-  computed: {
-    thread() {
-      return this.threads.find((thread) => thread.id === this.id);
-    },
-  },
-  methods: {
-    postById(postId) {
-      return this.posts.find((p) => p.id === postId);
-    },
-    userByPostId(postId) {
-      return this.users.find((u) => u.id === this.postById(postId).userId);
-    },
-  },
-
 };
 </script>
 
